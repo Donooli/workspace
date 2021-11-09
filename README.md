@@ -3,6 +3,7 @@
 asdasd
 
 ## asdasd
-'''sh
+
+```sh
 $ asd
-''''
+```
