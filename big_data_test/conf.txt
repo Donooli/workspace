@@ -1,0 +1,8 @@
+[cpu]
+interval = 1
+
+[mem]
+interval = 5
+
+[disk]
+interval : 60
