@@ -1,6 +1,25 @@
 import socket
 import threading
-from multiprocessing import Process, Queue, Pipe
+import argparse
+from multiprocessing import Process, Queue
+import configparser
+import mariadb
+
+
+def arg_reader():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--conf', type=str, default='db_conf.txt')
+    return parser.parse_args().conf
+
+
+def conf_reader(conf_file):
+    result = dict()
+    conf = configparser.ConfigParser()
+    conf.read(conf_file)
+    for i in conf.sections():
+        for j in conf.options(i):
+            result[j] = conf[i][j]
+    return result
 
 
 def binder(client_socket, addr, q):
@@ -19,9 +38,9 @@ def binder(client_socket, addr, q):
             client_socket.sendall(lenth.to_bytes(4, byteorder='little'))
             client_socket.sendall(data)
         except:
+            client_socket.close()
             print('except :', addr)
             break
-    client_socket.close()
 
 
 def save_q(q):
@@ -58,10 +77,10 @@ def socket_recv_server(q):
 
 def main():
     q = Queue()
-    ps = Process(target=socket_recv_server, args=(q,))
+    pr = Process(target=socket_recv_server, args=(q,))
     pv = Process(target=save_q, args=(q,))
 
-    ps.start()
+    pr.start()
     pv.start()
 
 

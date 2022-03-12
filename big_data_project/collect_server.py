@@ -9,7 +9,7 @@ import socket
 def arg_reader():
     parser = argparse.ArgumentParser()
     parser.add_argument('--conf', type=str, default='conf.txt')
-    return vars(parser.parse_args()).values()
+    return parser.parse_args().conf
 
 
 def conf_reader(conf_file):
@@ -23,15 +23,15 @@ def conf_reader(conf_file):
 
 
 def time_tick(pipe_name):
-    counter = 0
+    count = 0
     while 1:
         try:
             time.sleep(1 - time.time() % 1)
-            counter += 1
-            pipe_name.send(counter)
+            count += 1
+            pipe_name.send(count)
             #            print(time.time())
-            if counter == 60:
-                counter = 0
+            if count == 60:
+                count = 0
         except:
             print('time_tick stop')
             break
@@ -41,6 +41,7 @@ def make_pipe(**data):
     for i in data.keys():
         globals()[f't{i[0]}'], globals()[f'{i[0]}t'] = Pipe()
         print(f'Make {i} pipe success')
+
 
 def make_timer(**data):
     timers = []
