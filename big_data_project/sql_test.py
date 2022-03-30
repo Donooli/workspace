@@ -1,3 +1,5 @@
+from typing import Dict
+
 import mariadb
 import argparse
 import configparser
@@ -10,7 +12,7 @@ def arg_reader():
 
 
 def conf_reader(conf_file):
-    result = dict()
+    result: dict[str, str] = dict()
     conf = configparser.ConfigParser()
     conf.read(conf_file)
     for i in conf.sections():

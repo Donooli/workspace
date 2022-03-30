@@ -3,6 +3,7 @@ import threading
 import argparse
 from multiprocessing import Process, Queue
 import configparser
+
 import mariadb
 
 
@@ -42,13 +43,21 @@ def binder(client_socket, addr, q):
             print('except :', addr)
             break
 
+def sql_input(data):
+    print(data)
+    return 'SHOW TABLES'
+
 
 def save_q(q):
     counter = 1
     while 1:
         try:
             data = q.get()
-            print('saved', data, counter)
+            sql = sql_input(data)
+            db = mariadb.MariaDB(conf_reader(arg_reader()))
+            db.conn_db()
+            db.input_data(sql)
+            #print('saved', data, counter)
             counter += 1
         except:
             print('save end')
@@ -74,14 +83,13 @@ def socket_recv_server(q):
             break
     sever_socket.close()
 
-
 def main():
     q = Queue()
     pr = Process(target=socket_recv_server, args=(q,))
     pv = Process(target=save_q, args=(q,))
 
-    pr.start()
     pv.start()
+    pr.start()
 
 
 if __name__ == '__main__':
