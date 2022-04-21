@@ -24,9 +24,8 @@ def slice_video(video_path):
             if ret and count % 10 == 0:
                 print(f'{vid_path_arr[-1]}-{count}.png')
                 # print(image)
-                cv2.imwrite(
-                    f'E:/seongwon/img/{vid_path_arr[3]}/{vid_path_arr[4]}_img/{vid_path_arr[-1][:-4]}-{count}.png',
-                    image)
+                #cv2.imwrite(f'E:/seongwon/img/slice_images-2/{vid_path_arr[3]}/{vid_path_arr[-1][:-4]}-{count}.png', image)
+                cv2.imwrite(f'C:/Users/jdnl/Documents/cache/slice_img-3/{vid_path_arr[-1][:-4]}-{count}.png', image)
                 # print(f'E:/seongwon/img/{vid_path_arr[3]}/{vid_path_arr[4]}_img/{vid_path_arr[-1][:-4]}-{count}.mp4')
 
             elif ret == False:
@@ -40,10 +39,10 @@ def slice_video(video_path):
 
 
 def main():
-    p1 = Process(target=find_video, args=('E:\\seongwon\\img\\kim',))
-    p2 = Process(target=find_video, args=('E:\\seongwon\\img\\lee',))
-    p3 = Process(target=find_video, args=('E:\\seongwon\\img\\mun',))
-    p4 = Process(target=find_video, args=('E:\\seongwon\\img\\jeong',))
+    p1 = Process(target=find_video, args=('E:\\seongwon\\img\\kim-2',))
+    p2 = Process(target=find_video, args=('E:\\seongwon\\img\\lee-2',))
+    p3 = Process(target=find_video, args=('E:\\seongwon\\img\\mun-2',))
+    p4 = Process(target=find_video, args=('E:\\seongwon\\img\\jeong-2',))
 
     p1.start()
     p2.start()
@@ -55,7 +54,12 @@ def main():
     p3.join()
     p4.join()
 
+def main2():
+    pt = Process(target=find_video, args=('C:\\Users\\jdnl\\Documents\\cache\\0313-3',))
+    pt.start()
+    pt.join()
+
 
 if __name__ == '__main__':
-    main()
+    main2()
     # find_video('E:\\seongwon\\img\\kim')
